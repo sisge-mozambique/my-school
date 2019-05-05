@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</f:facet>
+
+	<title>Login - SISGE v1.0</title>
+
+	<h:outputStylesheet library="algaworks" name="styles/custom.css" />
+	<h:outputStylesheet library="algaworks" name="styles/layout.css" />
+	<h:outputStylesheet library="algaworks" name="styles/components.css" />
+
+	<h:outputScript target="body" library="primefaces"
+		name="jquery/jquery.js" />
+	<h:outputScript target="body" library="algaworks"
+		name="javascripts/app.js" />
+</h:head>
+
+<h:body style="background-color: #f8f8f8;">
+
+	<f:metadata>
+		<f:viewParam name="dummy" />
+		<f:event listener="#{loginBean.preRender}" type="preRenderView" />
+	</f:metadata>
+
+
+	<header class="aw-topbar">
+
+		<h:graphicImage library="algaworks" name="images/logo.png"
+			title="SISGE v1.0" />
+
+		<a href="#" class="aw-toggle  js-toggle">Info.<i
+			class="fa  fa-bars"></i></a>
+	</header>
+
+	<aside class="aw-sidebar  js-sidebar">
+
+		<h:form>
+			<h4 style="margin-left: 10px;">Sobre nos!</h4>
+			<hr style="margin-top: -5px;"></hr>
+			<div style="background-color: #c4e4f7; margin-top: -15px;">
+				<h5 style="margin-left: 10px; text-align: justify;">
+					<p>
+						O <b style="color: red;"><i>SISGE</i></b>, é um sistema,
+						desenvolvido pela <b style="color: green;"><i>ROCKET APP</i></b>, a
+						pensar directamente em suprir as necessidades de todas Escolas
+						(Publicas e Privadas) de todo o Pais, desde das básicas as
+						avançadas, perante o processo de gestão de todas as tarefas
+						executadas dentro de um regime Escolar - (Regulamentar, Primário e
+						Secundário).
+					</p>
+				</h5>
+
+				<h5 style="margin-left: 10px; text-align: justify;">
+					<p>
+						O Padrão do sistema está baseado em todas as regras declaradas
+						pelo <b>Ministério da Educação</b> Moçambicano, isto a partir do
+						decreto do ano de 2019, desde o básico, que envolve o cálculo das
+						Médias ao avançado, que envolve as emissões das <i
+							style="color: green">Declarações e Certificados mapeados com
+							códigos biométricos</i>.
+					</p>
+				</h5>
+			</div>
+		</h:form>
+		<hr style="margin-top: -15px;" />
+
+		<h5 style="margin-top: -5px;">
+			Suporte (Contactos):
+			<ul>
+				<li>+258 846478219</li>
+				<li>sisge.mozambique@gmail.com</li>
+			</ul>
+		</h5>
+	</aside>
+
+
+	<section class="aw-content  js-content">
+		<div class="container" style="margin-top: 20px; font-size: 11px;">
+
+			<h:form prependId="false" id="Lgn">
+
+
+				<div class="ui-fluid">
+					<h:panelGrid columns="2">
+						<h:graphicImage library="algaworks" name="images/logo.png"
+							title="SISGE v1.0" style="height: 50px;" />
+						<h4>Login do usuário</h4>
+					</h:panelGrid>
+
+
+					<p:messages id="msg" closable="true" />
+					<p:panelGrid columns="1" layout="grid"
+						columnClasses="ui-grid-col-4" styleClass="panelgrid-noborder">
+
+						<p:inputText label="Endereço de email" type="email"
+							class="form-control" placeholder="Email do usuário"
+							required="true" requiredMessage="Preencha o endereço de email"
+							id="j_username" value="#{loginBean.email}" />
+
+						<p:inputText label="Palavra chave" type="password"
+							class="form-control" placeholder="Palavra chave" required="true"
+							requiredMessage="Preencha a senha" id="j_password" />
+
+						<p:commandButton value="Entrar" action="#{loginBean.login}"
+							ajax="false" update="msg" icon="ui-icon-refresh" />
+					</p:panelGrid>
+
+				</div>
+			</h:form>
+
+		</div>
+
+		<hr />
+
+		<h5 style="margin-top: -5px;">SISGE v1.0 - Sistema de Gestão
+			Escolar</h5>
+
+
+	</section>
+
+</h:body>
+
+</html>

@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:viewAction action="#{disciplina_Classe_Bean.listar}" />
+			<f:viewAction action="#{classeBean.listar}" />
+		</f:metadata>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Disciplina / Classe</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton title="Guardar"
+						action="#{disciplina_Classe_Bean.guardar}" process="@this"
+						update="@form" icon="ui-icon-check" />
+					<p:commandButton title="Limpar" process="@this" update="@form"
+						icon="ui-icon-refresh" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button title="Pesquisa" icon="ui-icon-search"
+						outcome="/paginas/secretaria/chefe/disc1_classe-sisge18.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Cruzamento de dados">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Classe" for="classe" />
+							<p:selectOneMenu label="Classe" id="classe" filter="true"
+								value="#{disciplina_Classe_Bean.disciplina_ClasseCadastro.classe}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{classeBean.classesLista}" var="c"
+									itemLabel="#{c.descricao}" itemValue="#{c}" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</div>
+
+			<p:dataTable id="disciplina" emptyMessage="Sem dados"
+				value="#{disciplinaBean.disciplinasLista}" var="d"
+				selectionMode="single"
+				selection="#{disciplinaBean.disciplinaSelecionada}"
+				rowKey="#{d.codigo}" reflow="true" style="margin-top: 20px"
+				paginatorAlwaysVisible="false" scrollable="true" scrollHeight="150">
+
+				<f:facet name="header">
+					<p:outputLabel value="Disponíveis" />
+				</f:facet>
+
+				<p:column headerText="Nome" priority="3">
+					<h:outputText value="#{d.nome}" />
+				</p:column>
+
+				<p:column headerText="Operações" priority="6">
+					<p:commandButton icon="ui-icon-circle-plus" title="Adicionar"
+						actionListener="#{disciplina_Classe_Bean.adicionar}"
+						update=":frm:discSelect :frm:msg">
+						<f:attribute name="disciplinaSelecionada" value="#{d}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dataTable id="discSelect" emptyMessage="Sem dados" reflow="true"
+				style="margin-top: 20px"
+				value="#{disciplina_Classe_Bean.disciplinasLista}" var="dL"
+				aginatorAlwaysVisible="false" scrollable="true" scrollHeight="150">
+
+				<f:facet name="header">
+					<p:outputLabel value="Selecionadas" />
+				</f:facet>
+
+				<p:column headerText="Nome" priority="3">
+					<h:outputText value="#{dL.nome}" />
+				</p:column>
+
+
+				<p:column headerText="Operações" priority="9">
+					<p:commandButton icon="ui-icon-circle-minus" title="Remover"
+						actionListener="#{disciplina_Classe_Bean.remover}"
+						update=":frm:discSelect">
+						<f:attribute name="disciplinaSelecionada" value="#{dL}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

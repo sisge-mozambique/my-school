@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:viewAction action="#{professorBean.listar}" />
+		</f:metadata>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Lista de professores</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+
+			<p:toolbar>
+				<p:toolbarGroup align="right">
+					<p:button title="Limpar" outcome="/paginas/rh/profe1-sisge18.xhtml"
+						icon="ui-icon-refresh" />
+					<p:commandButton title="Novo professor"
+						action="/paginas/rh/profe-sisge18.xhtml?faces-redirect=true"
+						icon="ui-icon-check" />
+					<p:commandButton id="toggler" type="button" title="Colunas"
+						icon="ui-icon-calculator" style="align: right;" />
+					<p:columnToggler datasource="profs" trigger="toggler" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<p:dataTable id="profs" value="#{professorBean.professoresLista}"
+				var="p" filteredValue="#{professorBean.professoresFiltro}"
+				selectionMode="single"
+				selection="#{professorBean.professorSelecionado}"
+				rowKey="#{p.codigo}" reflow="true" style="margin-top: 20px">
+
+				<p:column headerText="Bilhete" filterBy="#{p.bilhete}" priority="18">
+					<h:outputText value="#{p.bilhete}" />
+				</p:column>
+
+				<p:column headerText="Nome" filterBy="#{p.nome}" priority="3">
+					<h:outputText value="#{p.nome}" />
+				</p:column>
+
+				<p:column headerText="Sexo" sortBy="#{p.sexo}" priority="6">
+					<h:outputText value="#{p.sexo}" />
+				</p:column>
+
+				<p:column headerText="Nat. (Cidade)" priority="9">
+					<h:outputText value="#{p.cidade}" />
+				</p:column>
+
+				<p:column headerText="Categoria" priority="15">
+					<h:outputText value="#{p.categoria}" />
+				</p:column>
+
+				<p:column headerText="Operações" priority="9">
+					<p:button icon="ui-icon-pencil" title="Modificar"
+						outcome="/paginas/rh/profe-1-sisge18.xhtml">
+						<f:param name="codigo" value="#{p.codigo}" />
+					</p:button>
+					<p:commandButton icon="ui-icon-trash" title="Apagar"
+						process="@this" update=":frm:profs :frm:msg"
+						action="#{professorBean.apagar}">
+						<f:setPropertyActionListener value="#{p}"
+							target="#{professorBean.professorCadastro}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-newwin" title="Perfil completo">
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

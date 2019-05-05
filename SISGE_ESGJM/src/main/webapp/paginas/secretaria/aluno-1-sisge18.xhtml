@@ -1,0 +1,220 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<o:viewParam name="codigo" value="#{alunoBean.alunoCadastro}" />
+			<f:viewAction action="#{alunoBean.listar}" />
+		</f:metadata>
+
+
+		<h:form id="frm" enctype="multipart/form-data">
+
+			<h:panelGrid columns="2">
+				<h:graphicImage library="algaworks" name="images/logo.png"
+					title="SISGE v1.0" style="height: 50px;" />
+				<h1 class="aw-page-title">Inscrição do aluno Edição</h1>
+			</h:panelGrid>
+
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton title="Modificar" action="#{alunoBean.guardar}"
+						process="tabView @this" update=":frm:msg" icon="ui-icon-pencil" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button title="Pesquisa" icon="ui-icon-search"
+						outcome="/paginas/secretaria/aluno1-sisge18.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Dados básicos">
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Imagem: " />
+							<p:fileUpload label="imagem"
+								fileUploadListener="#{alunoBean.processoCarregamentoImg}"
+								cancelLabel="Cancelar" sizeLimit="2000000"
+								invalidSizeMessage="Imagem muito grande" mode="advanced"
+								dragDropSupport="false"
+								value="#{alunoBean.alunoCadastro.imagem}"
+								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" fileLimit="1" />
+
+							<p:outputLabel value="Vaga: " />
+							<p:selectOneMenu label="Vaga"
+								value="#{alunoBean.alunoCadastro.vaga}" filter="true">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{vagaBean.vagasLista}" var="v"
+									itemValue="#{v}"
+									itemLabel="#{v.classe.descricao} - #{v.anoLectivo} (#{v.periodo})" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Nome: " />
+							<p:inputText label="Nome" value="#{alunoBean.alunoCadastro.nome}" />
+
+							<p:outputLabel value="Estado: " />
+							<p:selectOneMenu label="Estado"
+								value="#{alunoBean.alunoCadastro.estado}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{alunoBean.estados}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Sexo: " />
+							<p:selectOneButton label="Sexo"
+								value="#{alunoBean.alunoCadastro.sexo}">
+								<f:selectItems value="#{alunoBean.enumSexos}" />
+							</p:selectOneButton>
+
+							<p:outputLabel value="Grupo: " />
+							<p:selectOneMenu label="Grupo"
+								value="#{alunoBean.alunoCadastro.grupo}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{alunoBean.grupos}" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Data de Nascimento: " />
+							<p:calendar label="Data de nascimento" yearRange="c-65:c+0"
+								value="#{alunoBean.alunoCadastro.dataNascimento}" mode="popup"
+								showOn="button" pattern="dd/MM/yyyy" mask="true" locale="pt_BR"
+								navigator="true" />
+
+							<p:outputLabel value="Nº de bilhete: " />
+							<p:inputText label="Bilhete"
+								value="#{alunoBean.alunoCadastro.bilhete}" />
+
+							<p:outputLabel value="Nome do pai: " />
+							<p:inputText label="Nome do pai"
+								value="#{alunoBean.alunoCadastro.nomePai}" />
+
+							<p:outputLabel value="Nome da mãe: " />
+							<p:inputText label="Nome da mãe:"
+								value="#{alunoBean.alunoCadastro.nomeMae}" />
+
+						</p:panelGrid>
+					</p:tab>
+
+					<p:tab title="Naturalidade">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="País: " />
+							<p:inputText label="País" value="#{alunoBean.alunoCadastro.pais}" />
+
+							<p:outputLabel value="Província: " />
+							<p:inputText label="Província"
+								value="#{alunoBean.alunoCadastro.provincia}" />
+
+							<p:outputLabel value="Cidade: " />
+							<p:inputText label="Cidade"
+								value="#{alunoBean.alunoCadastro.cidade}" />
+						</p:panelGrid>
+					</p:tab>
+
+					<p:tab title="Endereço">
+
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Cidade: " />
+							<p:inputText label="Cidade"
+								value="#{alunoBean.alunoCadastro.cidade}" />
+
+							<p:outputLabel value="Bairro: " />
+							<p:inputText label="Bairro"
+								value="#{alunoBean.alunoCadastro.bairro}" />
+
+							<p:outputLabel value="Nº da casa: " />
+							<p:inputText label="Nº da casa"
+								value="#{alunoBean.alunoCadastro.nrCasa}" />
+
+							<p:outputLabel value="Rua: " />
+							<p:inputText label="Rua" value="#{alunoBean.alunoCadastro.rua}" />
+
+						</p:panelGrid>
+					</p:tab>
+
+					<p:tab title="Contacto">
+
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Número Tel. 1: " />
+							<p:inputText label="Número Tel. 1"
+								value="#{alunoBean.alunoCadastro.numero_1}" />
+
+							<p:outputLabel value="Correio electrónico: " />
+							<p:inputText label="Correio electrónico"
+								value="#{alunoBean.alunoCadastro.e_mail}" />
+
+							<p:outputLabel value="Número Tel. 2: " />
+							<p:inputText label="Número Tel. 2"
+								value="#{alunoBean.alunoCadastro.numero_2}" />
+
+							<p:outputLabel value="Facebook: " />
+							<p:inputText label="Facebook"
+								value="#{alunoBean.alunoCadastro.facebook}" />
+
+							<p:outputLabel value="Número Tel. 3: " />
+							<p:inputText label="Número Tel. 3"
+								value="#{alunoBean.alunoCadastro.numero_3}" />
+
+						</p:panelGrid>
+					</p:tab>
+
+
+					<p:tab title="10a Classe">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Media 8a: " />
+							<p:spinner label="Media 8a"
+								value="#{alunoBean.alunoCadastro.media_8a}" />
+
+							<p:outputLabel value="Media 9a: " />
+							<p:spinner label="Media 9a"
+								value="#{alunoBean.alunoCadastro.media_9a}" />
+
+						</p:panelGrid>
+					</p:tab>
+
+
+					<p:tab title="12a Classe">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+
+							<p:outputLabel value="Media 11a: " />
+							<p:spinner label="Media 11a"
+								value="#{alunoBean.alunoCadastro.media_11a}" />
+
+						</p:panelGrid>
+					</p:tab>
+
+				</p:tabView>
+			</div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

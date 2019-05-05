@@ -1,0 +1,181 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml"
+	xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="codigo" value="#{professorBean.professorCadastro}" />
+		<f:viewAction action="#{professorBean.listar}" />
+	</f:metadata>
+
+	<ui:define name="content">
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Modificar Professor</h1>
+		</h:panelGrid>
+
+		<h:form id="frm" enctype="multipart/form-data">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton title="Modificar"
+						action="#{professorBean.guardar}" process="tabView @this"
+						update="msg" icon="ui-icon-pencil" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button title="Pesquisa" icon="ui-icon-search"
+						outcome="/paginas/rh/profe1-sisge18.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Dados básicos">
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Imagem: " />
+							<p:fileUpload label="imagem"
+								fileUploadListener="#{professorBean.processoCarregamentoImg}"
+								cancelLabel="Cancelar" sizeLimit="2000000"
+								invalidSizeMessage="Imagem muito grande" mode="advanced"
+								dragDropSupport="false"
+								value="#{professorBean.professorCadastro.imagem}"
+								allowTypes="/(\.|\/)(gif|jpe?g|png)$/" fileLimit="1" />
+
+							<p:outputLabel value="Data de Nascimento: " />
+							<p:calendar label="Data de nascimento" yearRange="c-65:c+0"
+								value="#{professorBean.professorCadastro.dataNascimento}"
+								mode="popup" showOn="button" pattern="dd/MM/yyyy" mask="true"
+								locale="pt_BR" navigator="true" />
+
+							<p:outputLabel value="Nome: " />
+							<p:inputText label="Nome"
+								value="#{professorBean.professorCadastro.nome}" />
+
+							<p:outputLabel value="Categoria: " />
+							<p:selectOneMenu label="Categoria"
+								value="#{professorBean.professorCadastro.categoria}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{professorBean.categorias}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Sexo: " />
+							<p:selectOneButton label="Sexo"
+								value="#{professorBean.professorCadastro.sexo}">
+								<f:selectItems value="#{professorBean.enumSexos}" />
+							</p:selectOneButton>
+
+							<p:outputLabel value="Estado: " />
+							<p:selectOneMenu label="Estado"
+								value="#{professorBean.professorCadastro.estado}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{professorBean.estados}" />
+							</p:selectOneMenu>
+						</p:panelGrid>
+
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Nº de bilhete: " />
+							<p:inputText label="Bilhete"
+								value="#{professorBean.professorCadastro.bilhete}" />
+
+							<p:outputLabel value="Nome do pai: " />
+							<p:inputText label="Nome do pai"
+								value="#{professorBean.professorCadastro.nomePai}" />
+
+							<p:outputLabel value="Nome da mãe: " />
+							<p:inputText label="Nome da mãe:"
+								value="#{professorBean.professorCadastro.nomeMae}" />
+
+						</p:panelGrid>
+					</p:tab>
+
+					<p:tab title="Naturalidade">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="País: " />
+							<p:inputText label="País"
+								value="#{professorBean.professorCadastro.pais}" />
+
+							<p:outputLabel value="Província: " />
+							<p:inputText label="Província"
+								value="#{professorBean.professorCadastro.provincia}" />
+
+							<p:outputLabel value="Cidade: " />
+							<p:inputText label="Cidade"
+								value="#{professorBean.professorCadastro.cidade}" />
+						</p:panelGrid>
+					</p:tab>
+
+					<p:tab title="Endereço">
+
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Cidade: " />
+							<p:inputText label="Cidade"
+								value="#{professorBean.professorCadastro.cidade}" />
+
+							<p:outputLabel value="Bairro: " />
+							<p:inputText label="Bairro"
+								value="#{professorBean.professorCadastro.bairro}" />
+
+							<p:outputLabel value="Nº da casa: " />
+							<p:inputText label="Nº da casa"
+								value="#{professorBean.professorCadastro.nrCasa}" />
+
+							<p:outputLabel value="Rua: " />
+							<p:inputText label="Rua"
+								value="#{professorBean.professorCadastro.rua}" />
+
+						</p:panelGrid>
+					</p:tab>
+
+					<p:tab title="Contacto">
+
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Número Tel. 1: " />
+							<p:inputText label="Número Tel. 1"
+								value="#{professorBean.professorCadastro.numero_1}" />
+
+							<p:outputLabel value="Correio electrónico: " />
+							<p:inputText label="Correio electrónico"
+								value="#{professorBean.professorCadastro.e_mail}" />
+
+							<p:outputLabel value="Número Tel. 2: " />
+							<p:inputText label="Número Tel. 2"
+								value="#{professorBean.professorCadastro.numero_2}" />
+
+							<p:outputLabel value="Facebook: " />
+							<p:inputText label="Facebook"
+								value="#{professorBean.professorCadastro.facebook}" />
+
+							<p:outputLabel value="Número Tel. 3: " />
+							<p:inputText label="Número Tel. 3"
+								value="#{professorBean.professorCadastro.numero_3}" />
+
+						</p:panelGrid>
+					</p:tab>
+
+				</p:tabView>
+			</div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Dados da Escola Cadastro</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton title="Guardar"
+						action="#{dadosEscolaresBean.guardar}" process="tabView @this"
+						update="@form" icon="ui-icon-check" />
+					<p:commandButton title="Limpar" process="@this" update="@form"
+						icon="ui-icon-refresh" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button title="Pesquisa" icon="ui-icon-search"
+						outcome="/paginas/rh/dad-escola1-sisge18.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Dados básicos">
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Nome da Escola: " />
+							<p:inputText label="Nome da Escola"
+								value="#{dadosEscolaresBean.dadosEscolaresCadastro.nomeEscola}" />
+
+							<p:outputLabel value="Director: " />
+							<p:inputText label="Nome do Director"
+								value="#{dadosEscolaresBean.dadosEscolaresCadastro.nomeDirector}" />
+
+						</p:panelGrid>
+
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Chefe Secretaria: " />
+							<p:inputText label="Chefe Secretaria"
+								value="#{dadosEscolaresBean.dadosEscolaresCadastro.chefeSecretaria}" />
+
+							<p:outputLabel value="Chefe Secretaria - Formação: " />
+							<p:inputText label="Chefe Secretaria"
+								value="#{dadosEscolaresBean.dadosEscolaresCadastro.curso}" />
+
+							<p:outputLabel value="Categoria do Chefe da Sec.: " />
+							<p:selectOneMenu label="Categoria"
+								value="#{dadosEscolaresBean.dadosEscolaresCadastro.nivelChefeSecretaria}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{dadosEscolaresBean.categorias}" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</div>
+
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>

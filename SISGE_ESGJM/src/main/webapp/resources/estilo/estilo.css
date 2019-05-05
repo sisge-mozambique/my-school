@@ -1,0 +1,56 @@
+@charset "utf-8";
+
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 90% !important;
+}
+
+#login-dialog {
+	width: 260px;
+	margin: auto;
+	margin-top: 150px;
+}
+
+.grid-login {
+	background-color: #f2f2f2;
+	border-radius: 8px;
+	border: 1px solid #ccc;
+	margin-top: 8px;
+	width: 100%
+}
+
+body {
+	background-color: #ffffff;
+	font-size: 85%;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	font-weight: normal
+}
+
+header {
+	padding: 2px;
+	margin-bottom: 15px;
+	height: 50px;
+	background-color: #0fa212;
+	color: #fff;
+	box-shadow: 0px 2px 2px #f0f000
+}
+
+#conteudo {
+	padding: 0px 8px
+}
+
+footer {
+	border-top: 1px solid #ccc;
+	padding: 5px 8px;
+	margin-top: 20px;
+	margin-bottom: 10px
+}
+
+h1 {
+	font: bold;
+	font-size: 18px;
+	font-weight: 500;
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 10px
+}

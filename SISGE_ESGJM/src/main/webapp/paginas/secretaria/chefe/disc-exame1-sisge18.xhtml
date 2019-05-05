@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<f:metadata>
+		</f:metadata>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Lista de Disciplinas / Exame</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+			<p:toolbar>
+				<p:toolbarGroup align="right">
+					<p:button title="Limpar"
+						outcome="/paginas/secretaria/chefe/disc-exame1-sisge18.xhtml"
+						icon="ui-icon-refresh" />
+					<p:commandButton title="Cruzar Disc e Classe"
+						action="/paginas/secretaria/chefe/disc-exame-sisge18.xhtml?faces-redirect=true"
+						icon="ui-icon-check" />
+					<p:commandButton id="toggler" type="button" title="Colunas"
+						icon="ui-icon-calculator" style="align: right;" />
+					<p:columnToggler datasource="discSelect" trigger="toggler" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Filtro de dados">
+						<p:panelGrid columns="3" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Classe" for="classe" />
+							<p:selectOneMenu label="Classe" id="classe" filter="true"
+								value="#{disciplina_Classe_ExameBean.classe}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{classeBean.classesLista}" var="c"
+									itemLabel="#{c.descricao}" itemValue="#{c.codigo}" />
+							</p:selectOneMenu>
+							<p:commandButton title="Filtrar disciplinas"
+								icon="ui-icon-refresh"
+								action="#{disciplina_Classe_ExameBean.filtrarPorDisciplina}"
+								update=":frm:discSelect :frm:msg" />
+
+						</p:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</div>
+
+			<p:dataTable id="discSelect" emptyMessage="Sem dados" reflow="true"
+				paginator="true" style="margin-top: 20px"
+				value="#{disciplina_Classe_ExameBean.disciplina_Classe_ExamesFiltro}"
+				var="dcF" editable="true">
+
+				<f:facet name="header">
+					<p:outputLabel value="Lista de disciplinas" />
+				</f:facet>
+
+				<p:ajax event="rowEdit"
+					listener="#{disciplina_Classe_ExameBean.onRowEdit}"
+					update=":frm:msg" />
+
+				<p:column headerText="Nome" priority="3">
+					<h:outputText value="#{dcF.disciplina.disciplina.nome}" />
+				</p:column>
+
+
+				<p:column headerText="Exame" priority="6">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{dcF.exame}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:selectOneMenu
+								value="#{disciplina_Classe_ExameBean.disciplina_Classe_ExameCadastro.exame}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{disciplina_Classe_ExameBean.aceitacao}"
+									var="c" itemValue="#{c}" />
+							</p:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Operações" priority="9">
+					<p:commandButton icon="ui-icon-circle-minus" title="Remover"
+						actionListener="#{disciplina_Classe_ExameBean.removerDefinitivamente}"
+						process="@this" update=":frm:discSelect :frm:msg">
+						<f:attribute name="disciplinaSelecionada" value="#{dcF}" />
+					</p:commandButton>
+				</p:column>
+
+				<p:column style="width: 8%;">
+					<p:rowEditor editTitle="Modificar (2x)" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</f:facet>
+
+	<title>SISGE v1.0</title>
+
+	<h:outputStylesheet library="algaworks" name="styles/custom.css" />
+	<h:outputStylesheet library="algaworks" name="styles/layout.css" />
+	<h:outputStylesheet library="algaworks" name="styles/components.css" />
+
+	<h:outputScript target="body" library="primefaces"
+		name="jquery/jquery.js" />
+	<h:outputScript target="body" library="algaworks"
+		name="javascripts/app.js" />
+</h:head>
+
+<h:body>
+
+	<header class="aw-topbar">
+
+		<h:graphicImage library="algaworks" name="images/logo.png"
+			title="SISGE v1.0" />
+		<a href="#" class="aw-toggle  js-toggle">Menu<i
+			class="fa  fa-bars"></i></a>
+
+	</header>
+
+	<aside class="aw-sidebar  js-sidebar">
+
+		<h:form>
+			<h5 style="margin-left: 10px">Bem vindo,
+				#{seguranca.nomeUsuario}</h5>
+			<p:panelMenu>
+
+				<p:submenu label="Inicio" icon="ui-icon-home">
+					<p:menuitem value="#{seguranca.usuarioLogado.authorities}"
+						title="Usuário logado" />
+					<p:menuitem value="Pagina inicial" icon="ui-icon-home"
+						outcome="/Inicio.xhtml" />
+					<p:menuitem value="Dados da Escola" icon="ui-icon-flag"
+						outcome="/paginas/rh/dad-escola-sisge18.xhtml" />
+					<p:menuitem value="Meu Perfil" icon="ui-icon-person" />
+					<p:menuitem value="Sair" icon="ui-icon-close"
+						url="/j_spring_security_logout" />
+				</p:submenu>
+
+				<p:submenu label="Dados" icon="ui-icon-folder-open">
+					<p:menuitem value="Sala" icon="ui-icon-document"
+						outcome="/paginas/secretaria/chefe/sala-sisge18.xhtml" />
+					<p:menuitem value="Disciplina" icon="ui-icon-document"
+						outcome="/paginas/secretaria/chefe/disc-sisge18.xhtml" />
+					<p:menuitem value="Classe" icon="ui-icon-document"
+						outcome="/paginas/secretaria/chefe/classe-sisge18.xhtml" />
+					<p:menuitem value="Professor" icon="ui-icon-person"
+						outcome="/paginas/rh/profe-sisge18.xhtml" />
+					<p:menuitem value="Aluno" icon="ui-icon-person"
+						outcome="/paginas/secretaria/aluno-sisge18.xhtml" />
+
+					<p:submenu label="Associar" icon="ui-icon-folder-open">
+						<p:menuitem value="Disciplina e Classe" icon="ui-icon-shuffle"
+							outcome="/paginas/secretaria/chefe/disc_classe-sisge18.xhtml" />
+						<p:menuitem value="Disciplina e Professor" icon="ui-icon-shuffle"
+							outcome="/paginas/secretaria/chefe/profe_disc_classe-sisge18.xhtml" />
+
+						<p:submenu label="Controle de rotina" icon="ui-icon-folder-open">
+							<p:menuitem value="Disciplina e Exame" icon="ui-icon-shuffle"
+								outcome="/paginas/secretaria/chefe/disc-exame-sisge18.xhtml" />
+						</p:submenu>
+					</p:submenu>
+				</p:submenu>
+
+				<p:submenu label="Notas" icon="ui-icon-script">
+					<p:submenu label="Caderneta" icon="ui-icon-folder-open">
+						<p:menuitem value="Gerar caderneta" icon="ui-icon-plus"
+							outcome="/paginas/caderneta-sisge18.xhtml" />
+						<p:menuitem value="Emitir" icon="ui-icon-script"
+							outcome="/paginas/caderneta-1-sisge18.xhtml" />
+						<p:menuitem value="Relatório Físico"
+							outcome="/paginas/report-caderneta-sisge18.xhtml"
+							icon="ui-icon-circle-arrow-s" />
+					</p:submenu>
+
+					<p:submenu label="Pauta" icon="ui-icon-folder-open">
+						<p:menuitem value="Consultar" icon="ui-icon-search"
+							outcome="/paginas/consulta_pauta-sisge18.xhtml" />
+						<p:menuitem value="Relatório Físico"
+							outcome="/paginas/report-pauta-sisge18.xhtml"
+							icon="ui-icon-circle-arrow-s" />
+					</p:submenu>
+				</p:submenu>
+
+				<p:submenu label="Outros" icon="ui-icon-help">
+					<p:menuitem value="Informar vagas" icon="ui-icon-note"
+						outcome="/paginas/secretaria/chefe/vaga-sisge18.xhtml" />
+					<p:submenu label="Turma" icon="ui-icon-folder-open">
+						<p:menuitem value="Criar turmas" icon="ui-icon-plus"
+							outcome="/paginas/secretaria/chefe/turma-sisge18.xhtml" />
+						<p:menuitem value="Adicionar alunos" icon="ui-icon-shuffle"
+							outcome="/paginas/secretaria/chefe/alunos_turma-sisge18.xhtml" />
+					</p:submenu>
+
+					<p:menuitem value="Emitir certificado" icon="ui-icon-script"
+						outcome="/paginas/secretaria/chefe/report-certificado-sisge18.xhtml" />
+
+					<p:submenu label="Monitoria" icon="ui-icon-folder-open">
+						<p:submenu label="Desempenho" icon="ui-icon-wrench">
+							<p:menuitem value="Estudante" icon="ui-icon-flag" />
+							<p:menuitem value="Turma" icon="ui-icon-flag" />
+							<p:menuitem value="Escola" icon="ui-icon-flag" />
+							<p:menuitem value="Professor" icon="ui-icon-flag" />
+						</p:submenu>
+						<p:submenu label="Actividades" icon="ui-icon-calendar">
+							<p:menuitem value="Usuario" icon="ui-icon-clock"
+								outcome="/paginas/administrativas/report-logs-sisge18.xhtml" />
+						</p:submenu>
+					</p:submenu>
+				</p:submenu>
+
+				<p:submenu label="Contas" icon="ui-icon-person">
+					<p:menuitem value="Usuario" icon="ui-icon-person"
+						outcome="/paginas/administrativas/CadastroUsuario.xhtml" />
+				</p:submenu>
+
+				<p:submenu label="Ajuda" icon="ui-icon-lightbulb">
+					<p:menuitem value="Guia de uso" icon="ui-icon-script" />
+					<p:menuitem value="Sobre nós" icon="ui-icon-help" />
+				</p:submenu>
+			</p:panelMenu>
+		</h:form>
+	</aside>
+
+	<section class="aw-content  js-content">
+		<ui:insert name="content" />
+	</section>
+
+	<script>
+		PrimeFaces.locales['pt_BR'] = {
+			closeText : 'Fechar',
+			prevText : 'Anterior',
+			nextText : 'Próximo',
+			monthNames : [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio',
+					'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro',
+					'Novembro', 'Dezembro' ],
+			monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+					'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+			dayNames : [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta',
+					'Sexta', 'Sábado' ],
+			dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb' ],
+			dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S' ],
+			weekHeader : 'Semana',
+			weekNumberTitle : 'Sm',
+			firstDay : 0,
+			isRTL : false,
+			showMonthAfterYear : false,
+			yearSuffix : '',
+			timeOnlyTitle : 'Só Horas',
+			timeText : 'Tempo',
+			hourText : 'Hora',
+			minuteText : 'Minuto',
+			secondText : 'Segundo',
+			currentText : 'Começo',
+			ampm : false,
+			month : 'Mês',
+			week : 'Semana',
+			day : 'Dia',
+			allDayText : 'Todo o Dia',
+		}
+	</script>
+
+</h:body>
+
+</html>

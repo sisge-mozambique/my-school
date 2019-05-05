@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1">
+	<persistence-unit name="EscolaPU">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>mz.sisge.modelo.Aluno</class>
+		<class>mz.sisge.modelo.Classe</class>
+		<class>mz.sisge.modelo.Disciplina</class>
+		<class>mz.sisge.modelo.Disciplina_Classe</class>
+		<class>mz.sisge.modelo.Professor</class>
+		<class>mz.sisge.modelo.Professor_Disciplina_Classe</class>
+		<class>mz.sisge.modelo.Sala</class>
+		<class>mz.sisge.modelo.Turma</class>
+		<class>mz.sisge.modelo.Vaga</class>
+		<class>mz.sisge.modelo.Aluno_Turma</class>
+		<class>mz.sisge.modelo.Pauta</class>
+		<class>mz.sisge.modelo.Caderneta</class>
+		<class>mz.sisge.modelo.Usuario</class>
+		<class>mz.sisge.modelo.Grupo</class>
+		<class>mz.sisge.modelo.DadosEscolares</class>
+		<class>mz.sisge.modelo.Historico</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/sisge_josina_machel" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="Anselmo1" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+		</properties>
+	</persistence-unit>
+</persistence>

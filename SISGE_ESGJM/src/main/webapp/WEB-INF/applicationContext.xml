@@ -1,0 +1,82 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<beans:bean id="appUserDetailsService" class="com.mz.sgfv.seguranca.AppUserDetailsService" />
+
+	<beans:bean id="exceptionTranslationFilter"
+		class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<beans:property name="accessDeniedHandler" ref="jsfAccessDeniedHandler" />
+		<beans:property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
+	</beans:bean>
+
+	<beans:bean id="jsfAccessDeniedHandler"
+		class="com.mz.sgfv.seguranca.JsfAccessDeniedHandler">
+		<beans:property name="loginPath" value="/AcessoNegado.xhtml" />
+		<beans:property name="contextRelative" value="true" />
+	</beans:bean>
+
+	<beans:bean id="authenticationEntryPoint"
+		class="com.mz.sgfv.seguranca.JsfLoginUrlAuthenticationEntryPoint">
+		<beans:property name="loginFormUrl" value="/Login.xhtml" />
+		<beans:property name="redirectStrategy" ref="jsfRedirectStrategy" />
+	</beans:bean>
+
+	<beans:bean id="jsfRedirectStrategy" class="com.mz.sgfv.seguranca.JsfRedirectStrategy" />
+
+	<http pattern="/Login.xhtml" security="none" />
+	<http pattern="/Erro.xhtml" security="none" />
+	<http pattern="/javax.faces.resource/**" security="none" />
+
+	<http auto-config="false" use-expressions="true">
+		<custom-filter ref="exceptionTranslationFilter" before="FILTER_SECURITY_INTERCEPTOR" />
+
+		<intercept-url pattern="/Inicio.xhtml" access="isAuthenticated()" />
+		<intercept-url pattern="/AcessoNegado.xhtml" access="isAuthenticated()" />
+
+		<intercept-url pattern="/paginas/consulta_pauta-sisge18.xhtml"
+			access="hasAnyRole('SECRETARIA_SUPER', 'PROFESSOR')" />
+
+		<intercept-url pattern="/paginas/report-caderneta-sisge18.xhtml"
+			access="hasAnyRole('SECRETARIA_SUPER', 'PROFESSOR')" />
+
+		<intercept-url pattern="/paginas/report-pauta-sisge18.xhtml"
+			access="hasAnyRole('SECRETARIA_SUPER', 'PROFESSOR')" />
+
+		<intercept-url pattern="/paginas/caderneta-1-sisge18.xhtml"
+			access="hasAnyRole('PROFESSOR')" />
+
+		<intercept-url pattern="/paginas/caderneta-sisge18.xhtml"
+			access="hasAnyRole('SECRETARIA_SUPER')" />
+
+		<intercept-url pattern="/paginas/report-certificado-sisge18.xhtml"
+			access="hasAnyRole('SECRETARIA_SUPER')" />
+
+		<intercept-url pattern="/paginas/administrativas/**"
+			access="hasAnyRole('ADMINISTRADOR')" />
+
+		<intercept-url pattern="/paginas/rh/**" access="hasAnyRole('RH')" />
+
+		<intercept-url pattern="/paginas/secretaria/*" access="hasAnyRole('SECRETARIA')" />
+
+		<intercept-url pattern="/paginas/secretaria/**" access="hasAnyRole('SECRETARIA_SUPER')" />
+
+		<intercept-url pattern="/**" access="denyAll" />
+
+		<form-login login-page="/Login.xhtml"
+			authentication-failure-url="/Login.xhtml?invalid=true"
+			default-target-url="/" always-use-default-target="true" />
+		<logout logout-url="/j_spring_security_logout"
+			invalidate-session="true" />
+	</http>
+
+	<authentication-manager>
+		<authentication-provider user-service-ref="appUserDetailsService">
+			<!-- <password-encoder hash="md5" /> -->
+		</authentication-provider>
+	</authentication-manager>
+
+</beans:beans>

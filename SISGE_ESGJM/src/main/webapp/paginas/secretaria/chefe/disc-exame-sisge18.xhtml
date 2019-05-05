@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:viewAction action="#{disciplina_Classe_ExameBean.listar1}" />
+		</f:metadata>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Disciplina / Exame</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton title="Guardar"
+						action="#{disciplina_Classe_ExameBean.guardar}" process="@this"
+						update="@form" icon="ui-icon-check" />
+					<p:commandButton title="Limpar" process="@this" update="@form"
+						icon="ui-icon-refresh" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button title="Pesquisa" icon="ui-icon-search"
+						outcome="/paginas/secretaria/chefe/disc-exame1-sisge18.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<p:dataTable id="disciplina" emptyMessage="Sem dados"
+				value="#{disciplina_Classe_ExameBean.disciplina_ClassesLista1}"
+				var="d" selectionMode="single"
+				selection="#{disciplina_Classe_ExameBean.disciplinaSelecionada}"
+				rowKey="#{d.codigo}" reflow="true" style="margin-top: 20px"
+				paginatorAlwaysVisible="false" scrollable="true" scrollHeight="150">
+
+				<f:facet name="header">
+					<p:outputLabel value="Disponíveis" />
+				</f:facet>
+
+				<p:column headerText="Nome" priority="3"
+					sortBy="#{d.disciplina.nome}" filterBy="#{d.disciplina.nome}">
+					<h:outputText value="#{d.disciplina.nome}" />
+				</p:column>
+
+				<p:column headerText="Classe" priority="6"
+					filterBy="#{d.classe.descricao}">
+					<h:outputText value="#{d.classe.descricao}" />
+				</p:column>
+
+				<p:column headerText="Operações" priority="9">
+					<p:commandButton icon="ui-icon-circle-plus" title="Adicionar"
+						actionListener="#{disciplina_Classe_ExameBean.adicionar}"
+						update=":frm:discSelect :frm:msg">
+						<f:attribute name="disciplinaSelecionada" value="#{d}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dataList id="discSelect" emptyMessage="Sem dados" reflow="true"
+				style="margin-top: 20px"
+				value="#{disciplina_Classe_ExameBean.disciplina_ClassesLista}"
+				var="dL" aginatorAlwaysVisible="false">
+				<f:facet name="header">
+					<p:outputLabel value="Selecionadas" />
+				</f:facet>
+
+				<p:column headerText="Nome" priority="3">
+					<h:outputText
+						value="#{dL.disciplina.nome} --------- #{dL.classe.descricao} Classe" />
+				</p:column>
+
+
+				<p:column headerText="Operações" priority="9">
+					<p:commandButton icon="ui-icon-circle-minus" title="Remover"
+						actionListener="#{disciplina_Classe_ExameBean.remover}"
+						update=":frm:discSelect">
+						<f:attribute name="disciplinaSelecionada" value="#{dL}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataList>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

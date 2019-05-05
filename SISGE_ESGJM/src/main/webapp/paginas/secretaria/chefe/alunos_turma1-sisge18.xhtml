@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:viewAction action="#{aluno_TurmaBean.listar}" />
+		</f:metadata>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Lista de Alunos / Turma</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+
+			<p:toolbar>
+				<p:toolbarGroup align="right">
+					<p:button title="Limpar" outcome="/paginas/secretaria/chefe/alunos_turma1-sisge18.xhtml"
+						icon="ui-icon-refresh" />
+					<p:commandButton title="Nova classe"
+						action="/paginas/secretaria/chefe/alunos_turma-sisge18.xhtml?faces-redirect=true"
+						icon="ui-icon-check" />
+					<p:commandButton id="toggler" type="button" title="Colunas"
+						icon="ui-icon-calculator" style="align: right;" />
+					<p:columnToggler datasource="alunos" trigger="toggler" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<p:dataTable id="alunos" value="#{aluno_TurmaBean.aluno_TurmasLista}"
+				var="at" filteredValue="#{aluno_TurmaBean.aluno_TurmasListaFiltro}"
+				selectionMode="single"
+				selection="#{aluno_TurmaBean.aluno_TurmaSelecionado}"
+				rowKey="#{at.codigo}" reflow="true" style="margin-top: 20px">
+
+				<p:column headerText="Bilhete" filterBy="#{a.bilhete}" priority="3">
+					<h:outputText value="#{at.aluno.bilhete}" />
+				</p:column>
+
+				<p:column headerText="Nome" filterBy="#{at.aluno.nome}" priority="6">
+					<h:outputText value="#{at.aluno.nome}" />
+				</p:column>
+
+				<p:column headerText="Data nascimento"
+					sortBy="#{at.aluno.dataNascimento}" priority="9">
+					<h:outputText value="#{at.aluno.dataNascimento}" />
+				</p:column>
+
+				<p:column headerText="Turma (ano Lectivo)"
+					filterBy="#{at.turma.anoLectivo}" priority="12">
+					<h:outputText
+						value="#{at.turma.classe.descricao} - #{at.turma.nomeTurma} (#{at.turma.anoLectivo} - #{at.turma.periodo})" />
+				</p:column>
+
+				<p:column headerText="Operações" priority="15">
+					<p:button icon="ui-icon-pencil" title="Modificar"
+						outcome="/paginas/secretaria/chefe/alunos_turma-1-sisge18.xhtml">
+						<f:param name="codigo" value="#{at.codigo}" />
+					</p:button>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:viewAction action="#{alunoBean.listar}" />
+		</f:metadata>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Lista de Inscrições</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+
+			<p:toolbar>
+				<p:toolbarGroup align="right">
+					<p:button title="Limpar"
+						outcome="/paginas/secretaria/aluno1-sisge18.xhtml"
+						icon="ui-icon-refresh" />
+					<p:commandButton title="Novo aluno"
+						action="/paginas/secretaria/aluno-sisge18.xhtml?faces-redirect=true"
+						icon="ui-icon-check" />
+					<p:commandButton id="toggler" type="button" title="Colunas"
+						icon="ui-icon-calculator" style="align: right;" />
+					<p:columnToggler datasource="alunos" trigger="toggler" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<p:dataTable id="alunos" value="#{alunoBean.alunosLista}" var="a"
+				filteredValue="#{alunoBean.alunosFiltro}" selectionMode="single"
+				selection="#{alunoBean.alunoSelecionado}" rowKey="#{a.codigo}"
+				reflow="true" style="margin-top: 20px"
+				paginatorAlwaysVisible="false">
+
+				<p:column headerText="Codigo" filterBy="#{a.bilhete}" priority="24">
+					<h:outputText value="#{a.codigo}" />
+				</p:column>
+
+				<p:column headerText="Nome" filterBy="#{a.nome}" priority="3">
+					<h:outputText value="#{a.nome}" />
+				</p:column>
+
+				<p:column headerText="Sexo" sortBy="#{a.sexo}" priority="6">
+					<h:outputText value="#{a.sexo}" />
+				</p:column>
+
+				<p:column headerText="Classe" priority="12"
+					filterBy="#{a.vaga.classe.descricao}">
+					<h:outputText value="#{a.vaga.classe.descricao}" />
+				</p:column>
+
+				<p:column headerText="Ano lectivo" priority="15"
+					filterBy="#{a.vaga.anoLectivo}">
+					<h:outputText value="#{a.vaga.anoLectivo}" />
+				</p:column>
+
+				<p:column headerText="Ano lectivo" priority="15"
+					sortBy="#{a.estado}">
+					<h:outputText value="#{a.estado}" />
+				</p:column>
+
+				<p:column headerText="Operações" priority="21">
+					<p:button icon="ui-icon-pencil" title="Modificar"
+						outcome="/paginas/secretaria/aluno-1-sisge18.xhtml">
+						<f:param name="codigo" value="#{a.codigo}" />
+					</p:button>
+					<p:commandButton icon="ui-icon-trash" title="Apagar"
+						process="@this" update=":frm:alunos :frm:msg"
+						action="#{alunoBean.apagar}">
+						<f:setPropertyActionListener value="#{a}"
+							target="#{alunoBean.alunoCadastro}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-newwin" title="Perfil completo">
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,147 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:viewAction action="#{turmaBean.listar}" />
+		</f:metadata>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Alunos / Turma</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton title="Guardar"
+						action="#{aluno_TurmaBean.guardar}" process="tabView @this"
+						update="@form" icon="ui-icon-check" />
+					<p:commandButton title="Limpar" process="@this" update="@form"
+						icon="ui-icon-refresh" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button title="Pesquisa" icon="ui-icon-search"
+						outcome="/paginas/secretaria/chefe/alunos_turma1-sisge18.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Cruzamento de dados">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Turma" for="turma" />
+							<p:selectOneMenu label="Turma" id="turma" filter="true"
+								value="#{aluno_TurmaBean.aluno_TurmaCadastro.turma}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{turmaBean.turmasLista}" var="t"
+									itemLabel="#{t.classe.descricao} - #{t.nomeTurma} (#{t.anoLectivo} - #{t.periodo})"
+									itemValue="#{t}" />
+								<p:ajax listener="#{aluno_TurmaBean.listarPorSelecao}"
+									update=":frm:alunos" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</div>
+
+			<p:dataTable id="alunos" emptyMessage="Sem dados"
+				value="#{aluno_TurmaBean.alunosLista}" var="a"
+				selectionMode="single"
+				selection="#{aluno_TurmaBean.alunoSelecionado}" rowKey="#{a.codigo}"
+				reflow="true" style="margin-top: 20px"
+				paginatorAlwaysVisible="false" scrollable="true" scrollHeight="150">
+
+				<f:facet name="header">
+					<p:outputLabel value="Disponíveis" />
+				</f:facet>
+
+				<p:column headerText="Bilhete" filterBy="#{a.bilhete}" priority="3">
+					<h:outputText value="#{a.bilhete}" />
+				</p:column>
+
+				<p:column headerText="Nome" filterBy="#{a.nome}" priority="6">
+					<h:outputText value="#{a.nome}" />
+				</p:column>
+
+				<p:column headerText="Data nascimento" sortBy="#{a.dataNascimento}"
+					priority="6">
+					<h:outputText value="#{a.dataNascimento}" />
+				</p:column>
+
+				<p:column headerText="Vaga" sortBy="#{a.vaga.classe.descricao}"
+					priority="6">
+					<h:outputText
+						value="#{a.vaga.classe.descricao} - #{a.vaga.anoLectivo} (#{a.vaga.periodo})" />
+				</p:column>
+
+				<p:column headerText="Status" sortBy="#{a.estado}" priority="6">
+					<h:outputText value="#{a.estado}" />
+				</p:column>
+
+				<p:column headerText="Operações" priority="9">
+					<p:commandButton icon="ui-icon-circle-plus" title="Adicionar"
+						actionListener="#{aluno_TurmaBean.adicionar}"
+						update=":frm:alSelect :frm:msg">
+						<f:attribute name="alunoSelecionado" value="#{a}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<p:dataTable id="alSelect" emptyMessage="Sem dados" reflow="true"
+				style="margin-top: 20px" value="#{aluno_TurmaBean.alunosLista2}"
+				var="a" aginatorAlwaysVisible="false" scrollable="true"
+				scrollHeight="150">
+
+				<f:facet name="header">
+					<p:outputLabel value="Selecionados" />
+				</f:facet>
+
+				<p:column headerText="Bilhete" filterBy="#{a.bilhete}" priority="3">
+					<h:outputText value="#{a.bilhete}" />
+				</p:column>
+
+				<p:column headerText="Nome" filterBy="#{a.nome}" priority="6">
+					<h:outputText value="#{a.nome}" />
+				</p:column>
+
+				<p:column headerText="Data nascimento" sortBy="#{a.dataNascimento}"
+					priority="6">
+					<h:outputText value="#{a.dataNascimento}" />
+				</p:column>
+
+				<p:column headerText="Vaga" sortBy="#{a.vaga.classe.descricao}"
+					priority="6">
+					<h:outputText
+						value="#{a.vaga.classe.descricao} - #{a.vaga.anoLectivo} (#{a.vaga.periodo})" />
+				</p:column>
+
+				<p:column headerText="Status" sortBy="#{a.estado}" priority="6">
+					<h:outputText value="#{a.estado}" />
+				</p:column>
+
+				<p:column headerText="Operações" priority="9">
+					<p:commandButton icon="ui-icon-circle-minus" title="Remover"
+						actionListener="#{aluno_TurmaBean.remover}" update=":frm:alSelect">
+						<f:attribute name="alunoSelecionado" value="#{a}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

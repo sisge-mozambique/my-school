@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+		<style type="text/css">
+.old {
+	background-color: #fed6d6 !important;
+	background-image: none !important;
+	color: #000000 !important;
+	font-style: bold;
+}
+</style>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Relatórios Físicos</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+			<p:toolbar>
+				<p:toolbarGroup align="right">
+					<p:button title="Limpar" icon="ui-icon-refresh"
+						outcome="report-pauta-sisge18.xhtml" />
+					<p:commandButton title="Imprimir"
+						action="#{relatorioPauta.imprimir}" ajax="false"
+						icon="ui-icon-circle-arrow-s" />
+
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" showDetail="true"
+				showSummary="true" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Cruzamento de dados">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Turma" for="turma" />
+							<p:selectOneMenu label="Turma" id="turma" filter="true"
+								value="#{relatorioPauta.turma}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{turmaBean.turmasLista}" var="t"
+									itemLabel="#{t.classe.descricao} - #{t.nomeTurma} (#{t.anoLectivo} - #{t.periodo})"
+									itemValue="#{t.codigo}" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Escola" for="escola" />
+							<p:selectOneMenu label="Escola" id="escola" filter="true"
+								value="#{relatorioPauta.escola}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{dadosEscolaresBean.dadosEscolaresLista}"
+									var="t" itemLabel="#{t.nomeEscola}" itemValue="#{t.codigo}" />
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</div>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

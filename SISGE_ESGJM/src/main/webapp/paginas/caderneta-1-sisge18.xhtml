@@ -1,0 +1,402 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<style type="text/css">
+.old {
+	background-color: #fed6d6 !important;
+	background-image: none !important;
+	color: #000000 !important;
+	font-style: bold;
+}
+</style>
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Lancar Dados</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:button title="Criar caderneta" icon="ui-icon-check"
+						outcome="caderneta-sisge18.xhtml" />
+					<p:button title="Limpar" outcome="caderneta-1-sisge18.xhtml"
+						icon="ui-icon-refresh" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button title="Pesquisa" icon="ui-icon-search"
+						outcome="caderneta-1-sisge18.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" showDetail="true"
+				showSummary="true" />
+			<p:growl id="msgGrow" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Cruzamento de dados">
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Professor" for="professor" />
+							<p:selectOneMenu label="Professor" id="professor" filter="true"
+								value="#{cadernetaBean.professor_Disciplina_ClasseCadastro}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems
+									value="#{prof_DisciplinaBean.professoresDisciplinaLista}"
+									var="p"
+									itemLabel="#{p.professor.nome} ( #{p.disciplina_Classe.disciplina.nome} - 
+									#{p.disciplina_Classe.classe.descricao} )"
+									itemValue="#{p}" />
+								<p:ajax
+									listener="#{cadernetaBean.popularTurmasListaPorProfessor}"
+									update=":frm:tabView:turma" />
+							</p:selectOneMenu>
+
+							<p:outputLabel value="Turma" for="turma" />
+							<p:selectOneMenu label="Turma" id="turma" filter="true"
+								value="#{cadernetaBean.cadernetaCadastro}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems
+									value="#{cadernetaBean.professorCadrntaTurmaLista}" var="d"
+									itemValue="#{d}"
+									itemLabel="#{d.aluno.turma.nomeTurma} *#{d.aluno.turma.anoLectivo} - ( #{d.aluno.turma.periodo} )" />
+								<p:ajax
+									listener="#{cadernetaBean.popularCadernetaPorTurmasListaPorProfessor}"
+									update=":frm:tabViewTabs:cadernetasI :frm:tabViewTabs:cadernetasII 
+									:frm:tabViewTabs:cadernetasIII :frm:tabViewTabs:cadernetaMedias" />
+							</p:selectOneMenu>
+
+
+						</p:panelGrid>
+					</p:tab>
+				</p:tabView>
+
+
+				<p:tabView style="margin-top: 10px" id="tabViewTabs">
+
+					<p:tab title="1ᵒ Trimestre">
+						<p:dataTable id="cadernetasI"
+							value="#{cadernetaBean.cadernetasLista}" var="c" reflow="true"
+							style="margin-top: 20px" editable="true"
+							rowStyleClass="#{c.media_I le 9.50 ? 'old' : null}">
+
+							<f:facet name="header">
+								<p:outputLabel value="Lista de Alunos" />
+							</f:facet>
+
+							<p:ajax event="rowEdit" listener="#{cadernetaBean.onRowEdit}"
+								update=":frm:msg" />
+
+							<p:column headerText="Nome" priority="3"
+								filterBy="#{c.aluno.aluno.nome}">
+								<h:outputText value="#{c.aluno.aluno.nome}" />
+							</p:column>
+
+							<p:column headerText="1ª AC" priority="6">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AC1_I}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.AC1_I}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="2ª AC" priority="9">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AC2_I}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.AC2_I}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="1ª AS" priority="12">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AS1_I}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.AS1_I}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="2ª AS" priority="15">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AS2_I}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.AS2_I}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="APT" priority="18">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.APT_I}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.APT_I}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Media" priority="21">
+								<h:outputText value="#{c.media_I}" />
+							</p:column>
+
+							<p:column style="width: 8%;">
+								<p:rowEditor editTitle="Modificar (2x)" />
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+
+					<p:tab title="2ᵒ Trimestre">
+						<p:dataTable id="cadernetasII"
+							value="#{cadernetaBean.cadernetasLista}" var="c" reflow="true"
+							style="margin-top: 20px" editable="true"
+							rowStyleClass="#{c.media_II le 9.50 ? 'old' : null}">
+
+							<f:facet name="header">
+								<p:outputLabel value="Lista de Alunos" />
+							</f:facet>
+
+							<p:ajax event="rowEdit" listener="#{cadernetaBean.onRowEdit}"
+								update=":frm:msg" />
+
+							<p:column headerText="Nome" priority="3"
+								filterBy="#{c.aluno.aluno.nome}">
+								<h:outputText value="#{c.aluno.aluno.nome}" />
+							</p:column>
+
+							<p:column headerText="1ª AC" priority="6">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AC1_II}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.AC1_II}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="2ª AC" priority="9">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AC2_II}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.AC2_II}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="1ª AS" priority="12">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AS1_II}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.AS1_II}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="2ª AS" priority="15">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AS2_II}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.AS2_II}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="APT" priority="18">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.APT_II}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.APT_II}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Media" priority="21">
+								<h:outputText value="#{c.media_II}" />
+							</p:column>
+
+							<p:column style="width: 8%;">
+								<p:rowEditor editTitle="Modificar (2x)" />
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+
+					<p:tab title="3ᵒ Trimestre">
+						<p:dataTable id="cadernetasIII"
+							value="#{cadernetaBean.cadernetasLista}" var="c" reflow="true"
+							style="margin-top: 20px" editable="true"
+							rowStyleClass="#{c.media_III le 9.50 ? 'old' : null}">
+
+							<f:facet name="header">
+								<p:outputLabel value="Lista de Alunos" />
+							</f:facet>
+
+							<p:ajax event="rowEdit" listener="#{cadernetaBean.onRowEdit}"
+								update=":frm:msg" />
+
+							<p:column headerText="Nome" priority="3"
+								filterBy="#{c.aluno.aluno.nome}">
+								<h:outputText value="#{c.aluno.aluno.nome}" />
+							</p:column>
+
+							<p:column headerText="1ª AC" priority="6">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AC1_III}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText
+											value="#{cadernetaBean.cadernetaCadastro.AC1_III}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="2ª AC" priority="9">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AC2_III}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText
+											value="#{cadernetaBean.cadernetaCadastro.AC2_III}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="1ª AS" priority="12">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AS1_III}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText
+											value="#{cadernetaBean.cadernetaCadastro.AS1_III}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="2ª AS" priority="15">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.AS2_III}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText
+											value="#{cadernetaBean.cadernetaCadastro.AS2_III}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="APT" priority="18">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.APT_III}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText
+											value="#{cadernetaBean.cadernetaCadastro.APT_III}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="Media" priority="21">
+								<h:outputText value="#{c.media_III}" />
+							</p:column>
+
+							<p:column style="width: 8%;">
+								<p:rowEditor editTitle="Modificar (2x)" />
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+
+					<p:tab title="Medias Gerais">
+						<p:dataTable id="cadernetaMedias"
+							value="#{cadernetaBean.cadernetasLista}" var="c" reflow="true"
+							style="margin-top: 20px" editable="true"
+							rowStyleClass="#{c.mediaGeral le 9.50 ? 'old' : null}">
+
+							<f:facet name="header">
+								<p:outputLabel value="Lista de Alunos" />
+							</f:facet>
+
+							<p:ajax event="rowEdit" listener="#{cadernetaBean.onRowEdit}"
+								update=":frm:msg" />
+
+							<p:column headerText="Nome" priority="3"
+								filterBy="#{c.aluno.aluno.nome}">
+								<h:outputText value="#{c.aluno.aluno.nome}" />
+							</p:column>
+
+							<p:column headerText="Media 1º Trimestre" priority="6">
+								<h:outputText value="#{c.media_I}" />
+							</p:column>
+
+							<p:column headerText="Media 2º Trimestre" priority="9">
+								<h:outputText value="#{c.media_II}" />
+							</p:column>
+
+							<p:column headerText="Media 3º Trimestre" priority="12">
+								<h:outputText value="#{c.media_III}" />
+							</p:column>
+
+							<p:column headerText="Media Final" priority="15">
+								<h:outputText value="#{c.mediaGeral}" />
+							</p:column>
+
+							<p:column headerText="Faltas" priority="18">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{c.faltas}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{cadernetaBean.cadernetaCadastro.faltas}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column style="width: 8%;">
+								<p:rowEditor editTitle="Modificar (2x)" />
+							</p:column>
+
+						</p:dataTable>
+					</p:tab>
+
+				</p:tabView>
+
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

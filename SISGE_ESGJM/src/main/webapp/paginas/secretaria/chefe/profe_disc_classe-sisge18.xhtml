@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/Layout.xhtml">
+
+	<ui:define name="content">
+
+		<h:panelGrid columns="2">
+			<h:graphicImage library="algaworks" name="images/logo.png"
+				title="SISGE v1.0" style="height: 50px;" />
+			<h1 class="aw-page-title">Professores / Disciplinas - Classe</h1>
+		</h:panelGrid>
+
+		<h:form id="frm">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton title="Guardar"
+						action="#{prof_DisciplinaBean.guardar}" process="@this"
+						update="@form" icon="ui-icon-check" />
+					<p:commandButton title="Limpar" process="@this" update="@form"
+						icon="ui-icon-refresh" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button title="Pesquisa" icon="ui-icon-search"
+						outcome="/paginas/secretaria/chefe/profe1_disc_classe-sisge18.xhtml" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg" closable="true" />
+
+			<div class="ui-fluid">
+				<p:tabView style="margin-top: 10px" id="tabView">
+					<p:tab title="Cruzamento de dados">
+						<p:panelGrid columns="5" layout="grid"
+							columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4"
+							styleClass="panelgrid-noborder">
+
+							<p:outputLabel value="Professor" for="professor" />
+							<p:selectOneMenu label="Professor" id="professor"
+								value="#{prof_DisciplinaBean.professorDisciplinaCadastro.professor}"
+								filter="true">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{professorBean.professoresLista}" var="p"
+									itemLabel="#{p.nome} - #{p.bilhete}" itemValue="#{p}" />
+							</p:selectOneMenu>
+							<p:outputLabel value="Classe" />
+							<p:selectOneMenu value="#{prof_DisciplinaBean.classe}">
+								<f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+								<f:selectItems value="#{classeBean.classesLista}" var="c"
+									itemValue="#{c.codigo}" itemLabel="#{c.descricao}" />
+							</p:selectOneMenu>
+							<p:commandButton title="Filtrar disciplinas"
+								icon="ui-icon-refresh"
+								action="#{prof_DisciplinaBean.filtrarDiscPorClasse}"
+								update=":frm:msg :frm:discSelect" />
+						</p:panelGrid>
+					</p:tab>
+				</p:tabView>
+			</div>
+
+			<p:dataList id="discSelect" emptyMessage="Sem dados" reflow="true"
+				paginator="true" style="margin-top: 20px"
+				value="#{prof_DisciplinaBean.disciplinasClasseLista}" var="dL"
+				paginatorPosition="bottom" paginatorAlwaysVisible="false"
+				paginatorTemplate="{PreviousPageLink} {CurrentPageReport} {NextPageLink}">
+
+				<f:facet name="header">
+					<p:outputLabel value="Disciplinas adicionadas" />
+				</f:facet>
+
+				<p:column headerText="Nome" priority="3">
+					<h:outputText value="#{dL.disciplina.nome}" />----
+				</p:column>
+
+
+				<p:column headerText="Operações" priority="9">
+					<p:commandButton icon="ui-icon-circle-minus" title="Remover"
+						actionListener="#{prof_DisciplinaBean.remover}"
+						update=":frm:discSelect">
+						<f:attribute name="disciplinaSelecionada" value="#{dL}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataList>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
